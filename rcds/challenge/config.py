@@ -121,12 +121,6 @@ class ConfigLoader:
         relative_path = root.resolve().relative_to(self.project.root.resolve())
         config = load_any(config_file)
 
-        # flatten ports
-        if "containers" in config:
-            for key in config["containers"]:
-                if config["containers"][key]["ports"]:
-                    config["containers"][key]["ports"] = config["containers"][key]["ports"][0]
-
         config.setdefault("id", root.name)  # derive id from parent directory name
 
         config = self._apply_defaults(config)
