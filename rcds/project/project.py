@@ -49,10 +49,11 @@ class Project:
         self.challenges = dict()
         self.asset_manager = AssetManager(self)
         self.jinja_env = Environment(autoescape=False)
+
         if docker_client is not None:
             self.docker_client = docker_client
         else:
-            self.docker_client = docker.from_env()
+            self.docker_client = None # Force None
 
     def load_all_challenges(self) -> None:
         for ext in SUPPORTED_EXTENSIONS:

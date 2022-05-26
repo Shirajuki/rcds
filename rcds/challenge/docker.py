@@ -156,6 +156,8 @@ class BuildableContainer(Container):
         self.image = self.manager.get_docker_image(self)
 
     def _build(self) -> None:
+        return
+        '''
         self.project.docker_client.images.build(
             path=str(self.root),
             tag=f"{self.image}:{self.content_hash}",
@@ -167,6 +169,7 @@ class BuildableContainer(Container):
         self.project.docker_client.images.push(
             self.image, tag=self.content_hash, auth_config=self.manager._auth_config
         )
+        '''
 
     def get_full_tag(self) -> str:
         return f"{self.image}:{self.content_hash}"
@@ -178,6 +181,8 @@ class BuildableContainer(Container):
 
         :returns: Whether or not the image was found
         """
+        return True
+        '''
         try:
             self.project.docker_client.images.get_registry_data(
                 self.get_full_tag(), auth_config=self.manager._auth_config
@@ -186,6 +191,7 @@ class BuildableContainer(Container):
         except docker.errors.NotFound:
             pass  # continue
         return False
+        '''
 
     def build(self, force: bool = False) -> None:
         if force or not self.is_built():
@@ -194,7 +200,7 @@ class BuildableContainer(Container):
 
 class _AuthCfgCache:
     _cache: Dict[str, Dict[str, str]] = dict()  # class-level
-
+    '''
     def get_auth_config(self, registry: str, api_client) -> Dict[str, str]:
         if registry not in self._cache:
             header = docker.auth.get_config_header(api_client, registry)
@@ -206,6 +212,7 @@ class _AuthCfgCache:
                 auth_config = None
             self._cache[registry] = auth_config
         return self._cache[registry]
+    '''
 
 
 _auth_cfg_cache = _AuthCfgCache()
@@ -220,7 +227,7 @@ class ContainerManager:
     project: "Project"
     config: Dict[str, Dict[str, Any]]
     containers: Dict[str, Container]
-    _auth_config: Dict[str, str]
+    #_auth_config: Dict[str, str]
 
     def __init__(self, challenge: "Challenge"):
         """
@@ -235,7 +242,7 @@ class ContainerManager:
             Dict[str, Dict[str, Any]], self.challenge.config.get("containers", dict())
         )
 
-        self._auth_config = self._get_auth_config()
+        # self._auth_config = self._get_auth_config()
 
         for name in self.config.keys():
             container_config = self.config[name]
@@ -263,9 +270,10 @@ class ContainerManager:
         return str(
             PurePosixPath(self.project.config["docker"]["image"]["prefix"]) / image
         )
-
+    '''
     def _get_auth_config(self) -> Dict[str, str]:
         registry, _ = docker.auth.resolve_repository_name(
             self.project.config["docker"]["image"]["prefix"]
         )
         return _auth_cfg_cache.get_auth_config(registry, self.project.docker_client.api)
+    '''
