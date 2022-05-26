@@ -53,7 +53,7 @@ class Project:
         if docker_client is not None:
             self.docker_client = docker_client
         else:
-            self.docker_client = None # Force None
+            self.docker_client = None  # Force None
 
     def load_all_challenges(self) -> None:
         for ext in SUPPORTED_EXTENSIONS:

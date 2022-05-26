@@ -1,11 +1,11 @@
-import base64
+# import base64
 import collections.abc
 import hashlib
-import json
+# import json
 from pathlib import Path, PurePosixPath
 from typing import TYPE_CHECKING, Any, Dict, Iterable, Iterator, Type, Union, cast
 
-import docker  # type: ignore
+# import docker  # type: ignore
 import pathspec  # type: ignore
 
 if TYPE_CHECKING:
@@ -227,7 +227,7 @@ class ContainerManager:
     project: "Project"
     config: Dict[str, Dict[str, Any]]
     containers: Dict[str, Container]
-    #_auth_config: Dict[str, str]
+    # _auth_config: Dict[str, str]
 
     def __init__(self, challenge: "Challenge"):
         """
