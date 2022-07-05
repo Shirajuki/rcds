@@ -154,6 +154,7 @@ class BuildableContainer(Container):
             self.dockerfile = build.get("dockerfile", "Dockerfile")
             self.buildargs = cast(Dict[str, str], build.get("args", dict()))
         self.content_hash = generate_sum(self.root)
+        self.content_hash = ""
         self.image = self.manager.get_docker_image(self)
 
     def _build(self) -> None:
@@ -161,7 +162,7 @@ class BuildableContainer(Container):
         """
         self.project.docker_client.images.build(
             path=str(self.root),
-            tag=f"{self.image}:{self.content_hash}",
+            tag=f"{self.image}{self.content_hash}",
             dockerfile=self.dockerfile,
             buildargs=self.buildargs,
             pull=True,
@@ -173,7 +174,7 @@ class BuildableContainer(Container):
         """
 
     def get_full_tag(self) -> str:
-        return f"{self.image}:{self.content_hash}"
+        return f"{self.image}{self.content_hash}"
 
     def is_built(self) -> bool:
         """
